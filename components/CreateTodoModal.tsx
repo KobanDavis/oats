@@ -17,11 +17,11 @@ const CreateTodoModal: FC<CreateTodoModalProps> = ({ close, submit }) => {
 				<Card className='h-min min-w-[20rem] select-none' title='Create new todo'>
 					<div className='space-y-4'>
 						<div className='flex flex-col space-y-2'>
-							<Label type='secondary'>Title</Label>
+							<Label type='primary'>Title</Label>
 							<Input onChange={(e) => setTitle(e.target.value)} />
 						</div>
 						<div className='flex flex-col space-y-2'>
-							<Label type='secondary'>Deadline</Label>
+							<Label type='primary'>Deadline</Label>
 							<Input htmlType='datetime-local' onChange={(e) => setDeadline(Number(new Date(e.target.value)))} />
 						</div>
 
