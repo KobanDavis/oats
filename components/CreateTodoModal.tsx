@@ -9,7 +9,7 @@ interface CreateTodoModalProps {
 
 const CreateTodoModal: FC<CreateTodoModalProps> = ({ close, submit }) => {
 	const [title, setTitle] = useState<string>('')
-	const [deadline, setDeadline] = useState<number>()
+	const [deadline, setDeadline] = useState<number>(null)
 
 	return (
 		<Modal close={close}>
@@ -27,7 +27,7 @@ const CreateTodoModal: FC<CreateTodoModalProps> = ({ close, submit }) => {
 
 						<Button
 							className='w-full'
-							disabled={!title || !deadline}
+							disabled={!title}
 							onClick={() => submit({ id: Math.random().toString().substring(3, 10), title, deadline, created: Date.now() })}
 							type='primary'
 						>

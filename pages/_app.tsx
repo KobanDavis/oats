@@ -5,6 +5,7 @@ import { AppProps } from 'next/app'
 import 'styles/globals.css'
 import { useEffect, useLayoutEffect } from 'react'
 import Head from 'next/head'
+import moment from 'moment'
 
 const satoshi = localFont({
 	src: [
@@ -19,6 +20,17 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
 	const { setThemeColor } = useTheme()
 
 	useEffect(() => {
+		moment.updateLocale('en', {
+			calendar: {
+				lastDay: '[Yesterday]',
+				sameDay: '[Today]',
+				nextDay: '[Tomorrow]',
+				lastWeek: '[Last] dddd',
+				nextWeek: '[Next] dddd',
+				sameElse: 'MMMM Do',
+			},
+		})
+
 		document.body.classList.add(satoshi.className)
 		setThemeColor('primary', localStorage.getItem('primary') ?? defaultTheme.primary)
 		setThemeColor('secondary', localStorage.getItem('secondary') ?? defaultTheme.secondary)

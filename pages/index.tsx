@@ -7,10 +7,11 @@ import CreateTodoModal from 'components/CreateTodoModal'
 import moment from 'moment'
 import clsx from 'clsx'
 import TodoComponent from 'components/Todo'
+import Clock from 'components/Clock'
 
 type Filter = 'All' | 'Deadline' | 'General' | 'Overdue' | 'Completed'
 const filters: Filter[] = ['All', 'General', 'Deadline', 'Overdue', 'Completed']
-export const isOverdue = (todo: Todo) => Date.now() > todo.deadline && !todo.completed
+export const isOverdue = (todo: Todo) => todo.deadline && Date.now() > todo.deadline && !todo.completed
 
 const Home: FC = () => {
 	const [todosString, setTodosString] = useLocalState('todos', '[]')
@@ -38,7 +39,7 @@ const Home: FC = () => {
 			}
 			let deadline = 'Todo'
 			if (todo.deadline) {
-				deadline = moment(todo.deadline).format('dddd')
+				deadline = moment(todo.deadline).calendar()
 			}
 
 			if (deadline in groups) {
@@ -64,6 +65,14 @@ const Home: FC = () => {
 		setTodosString(JSON.stringify(todos))
 	}
 
+	const deleteTodo = (id: string) => {
+		const todoIndex = todos.findIndex((todo) => todo.id === id)
+		todos.splice(todoIndex, 1)
+		setTodosString(JSON.stringify(todos))
+	}
+
+	const editTodo = (id: string) => {}
+
 	const results = Object.values(groups).flat().length > 0
 
 	return (
@@ -71,9 +80,12 @@ const Home: FC = () => {
 			<div className='flex flex-col w-1/2 max-lg:w-2/3 max-md:w-full max-md:px-8 mx-auto select-none h-screen'>
 				<div className='flex items-center justify-between'>
 					<span className='my-4 text-2xl font-bold'>Oats 🥣</span>
-					<Button onClick={() => setTodoModalIsVisible(true)} icon type='secondary'>
-						<PlusIcon className='text-theme-primary h-4 w-4 fill-current' />
-					</Button>
+					<div className='flex items-center space-x-3'>
+						<Clock />
+						<Button onClick={() => setTodoModalIsVisible(true)} icon type='secondary'>
+							<PlusIcon className='text-theme-primary h-4 w-4 fill-current' />
+						</Button>
+					</div>
 				</div>
 				<div className='flex flex-col'>
 					<div className='flex overflow-x-auto hide-scrollbar'>
@@ -98,10 +110,20 @@ const Home: FC = () => {
 							Object.entries(groups).map(([group, todos]) =>
 								todos.length ? (
 									<div className='flex flex-col'>
-										<span className={clsx('ml-1 mb-2 font-bold text-xl', group === 'Overdue' && 'text-red-500')}>{group}</span>
-										<div>
+										<div className='flex items-center ml-1 mb-2 font-bold text-xl justify-between'>
+											<span>{group}</span>
+											{group !== 'Todo' ? (
+												<span className='text-theme-primary/20'>{moment(todos[0].deadline).format('dddd')}</span>
+											) : null}
+										</div>
+										<div className='space-y-2'>
 											{todos.map((todo) => (
-												<TodoComponent onToggle={() => updateTodoCompleted(todo.id, !todo.completed ? Date.now() : null)} {...todo} />
+												<TodoComponent
+													deleteTodo={deleteTodo}
+													editTodo={editTodo}
+													onToggle={() => updateTodoCompleted(todo.id, !todo.completed ? Date.now() : null)}
+													{...todo}
+												/>
 											))}
 										</div>
 									</div>
