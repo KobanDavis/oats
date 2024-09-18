@@ -53,8 +53,8 @@ const Home: FC = () => {
 	)
 
 	const submit = (todo: Todo) => {
-		console.log(todo)
 		todos.push(todo)
+		setTodoModalIsVisible(false)
 		setTodosString(JSON.stringify(todos))
 	}
 
@@ -76,7 +76,7 @@ const Home: FC = () => {
 					</Button>
 				</div>
 				<div className='flex flex-col'>
-					<div className='flex overflow-x-auto'>
+					<div className='flex overflow-x-auto hide-scrollbar'>
 						{filters.map((filter) => (
 							<div
 								onClick={() => setSelectedFilter(filter)}

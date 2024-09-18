@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	font-family: 'Satoshi', sans-serif;
+	@apply bg-theme-secondary text-theme-primary;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
 ::-webkit-scrollbar {
 	display: unset;
 	cursor: pointer;

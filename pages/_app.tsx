@@ -19,7 +19,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
 	const { setThemeColor } = useTheme()
 
 	useEffect(() => {
-		document.body.classList.add(satoshi.className, 'bg-theme-secondary', 'text-theme-primary')
+		document.body.classList.add(satoshi.className)
 		setThemeColor('primary', localStorage.getItem('primary') ?? defaultTheme.primary)
 		setThemeColor('secondary', localStorage.getItem('secondary') ?? defaultTheme.secondary)
 	}, [])
